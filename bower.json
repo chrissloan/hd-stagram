@@ -1,0 +1,34 @@
+{
+  "name": "Haidee::ng-stagram",
+  "version": "0.0.0",
+  "homepage": "https://github.com/chrissloan/ng-stagram",
+  "authors": [
+    "Chris Sloan <chris@chrissloan.info>"
+  ],
+  "description": "AngularJS service and directives for the Instagram API",
+  "main": "src/ngStagram.js",
+  "keywords": [
+    "angular",
+    "instagram",
+    "directive",
+    "service",
+    "factory",
+    "api"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular": "~1.2.20",
+    "angular-mocks": "~1.2.20"
+  },
+  "dependencies": {
+    "angular": "~1.2.20"
+  }
+}
