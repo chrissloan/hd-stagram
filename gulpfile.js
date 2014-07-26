@@ -49,7 +49,7 @@ gulp.task('uglify', function() {
 });
 
 gulp.task('test', function() {
-  gulp.src([paths.js, paths.test])
+  gulp.src('./faker')
   .pipe(karma({
     configFile: 'karma.conf.js',
     action: 'watch'
