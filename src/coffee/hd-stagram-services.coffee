@@ -13,6 +13,6 @@
 
     return InstagramDataParser
 
-  angular.module 'ngStagram.services', []
+  angular.module 'haideeStagram.services', []
   .service 'InstagramDataParser', InstagramDataParser
 )(angular)

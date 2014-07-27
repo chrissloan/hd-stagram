@@ -28,6 +28,6 @@
 
   Instagram.$inject = ['$http', 'ClientID', 'InstagramDataParser']
 
-  angular.module 'ngStagram.factories', []
+  angular.module 'haideeStagram.factories', []
   .factory 'Instagram', Instagram
 )(angular)
