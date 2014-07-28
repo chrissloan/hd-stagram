@@ -46,10 +46,14 @@ describe('haideeStagram Directives', function(){
       expect(figcaption.length).toBe(1)
     });
 
-    it('should include the correct caption', function(){
-      text = element.find('figcaption').text()
-      expect(text).toEqual(mocks.singleImageJSON.data.caption.text)
-    });
-  });
+      it('should include the correct caption', function(){
+        text = element.find('figcaption').text()
+        expect(text).toEqual(mocks.singleImageJSON.data.caption.text)
+      });
 
+      it('should include the correct image url', function(){
+        url = element.find('img').attr('src')
+        expect(url).toEqual(mocks.singleImageJSON.data.images.low_resolution.url)
+      });
+  });
 });
