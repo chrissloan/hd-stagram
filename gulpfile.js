@@ -29,7 +29,7 @@ gulp.task('coffee', function() {
 gulp.task('templates', function(){
   gulp.src(paths.templates)
     .pipe(ngHtml2Js({
-        moduleName: "hdStagramTemplates",
+        moduleName: "haideeStagram.templates",
         prefix: "/templates/"
     }))
     .pipe(gulp.dest(paths.js_dest));

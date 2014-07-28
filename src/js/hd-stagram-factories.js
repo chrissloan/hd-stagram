@@ -1,7 +1,9 @@
 (function(angular) {
   'use strict';
   var Instagram;
-  Instagram = function($http, ClientID, InstagramDataParser) {
+  Instagram = function($http, $q, ClientID, InstagramDataParser) {
+    var deferred;
+    deferred = $q.defer();
     Instagram = {};
     Instagram.data = {};
     Instagram.base_url = "https://api.instagram.com/v1";
@@ -24,12 +26,16 @@
       var built_url, end_point;
       end_point = "" + this.end_points.shortcode + shortcode;
       built_url = "" + this.base_url + end_point;
-      return $http.jsonp(built_url, this.params).success(function(response) {
-        return Instagram.parseData(response);
+      $http.jsonp(built_url, this.params).success(function(response) {
+        Instagram.parseData(response);
+        return deferred.resolve(Instagram.data);
+      }).error(function(err) {
+        return deferred.reject('An error occurred.');
       });
+      return deferred.promise;
     };
     return Instagram;
   };
-  Instagram.$inject = ['$http', 'ClientID', 'InstagramDataParser'];
+  Instagram.$inject = ['$http', '$q', 'ClientID', 'InstagramDataParser'];
   return angular.module('haideeStagram.factories', []).factory('Instagram', Instagram);
 })(angular);

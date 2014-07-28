@@ -1,7 +1,8 @@
 ((angular)->
   'use strict'
 
-  Instagram = ($http, ClientID, InstagramDataParser) ->
+  Instagram = ($http, $q, ClientID, InstagramDataParser) ->
+    deferred = $q.defer()
     Instagram = {}
 
     Instagram.data       = {}
@@ -23,10 +24,15 @@
       built_url = "#{this.base_url}#{end_point}"
       $http.jsonp(built_url, this.params).success (response) ->
         Instagram.parseData(response)
+        deferred.resolve(Instagram.data)
+      .error (err) ->
+        deferred.reject('An error occurred.')
+
+      return deferred.promise
 
     return Instagram
 
-  Instagram.$inject = ['$http', 'ClientID', 'InstagramDataParser']
+  Instagram.$inject = ['$http', '$q', 'ClientID', 'InstagramDataParser']
 
   angular.module 'haideeStagram.factories', []
   .factory 'Instagram', Instagram

@@ -8,7 +8,7 @@ module.exports = function(config) {
       'src/**/*.js',
       'test/*.spec.js'
     ],
-    reporters: ['progress'],
-    colors: true
+    colors: true,
+    reporters: ['progress']
   });
 };

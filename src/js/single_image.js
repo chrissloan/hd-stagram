@@ -1,17 +1,15 @@
 (function(module) {
 try {
-  module = angular.module('hdStagramTemplates');
+  module = angular.module('haideeStagram.templates');
 } catch (e) {
-  module = angular.module('hdStagramTemplates', []);
+  module = angular.module('haideeStagram.templates', []);
 }
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/templates/single_image.html',
-    '<script type="text/ng-template" id="single_image.html">\n' +
-    '  <figure>\n' +
-    '    <img src="{{image.url}}" />\n' +
-    '    <figcaption>{{image.caption}}</figcaption>\n' +
-    '  </figure>\n' +
-    '</script>\n' +
+    '<figure>\n' +
+    '  <img ng-src="{{image.url}}" />\n' +
+    '  <figcaption>{{image.data.caption.text}}</figcaption>\n' +
+    '</figure>\n' +
     '');
 }]);
 })();
