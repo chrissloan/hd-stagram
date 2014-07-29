@@ -26,32 +26,34 @@
 (function(angular) {
   'use strict';
   var Instagram;
-  Instagram = function($http, $q, ClientID, InstagramDataParser) {
+  Instagram = function($http, $q, InstagramDataParser, InstagramClientID) {
     var deferred;
     deferred = $q.defer();
     Instagram = {};
     Instagram.data = {};
     Instagram.base_url = "https://api.instagram.com/v1";
-    Instagram.client_id = ClientID;
+    Instagram.client_id = InstagramClientID;
     Instagram.end_points = {
       shortcode: '/media/shortcode/'
     };
     Instagram.parseData = function(response) {
       return Instagram.data = InstagramDataParser.singleImage(response);
     };
+    Instagram.buildUrl = function(end_point) {
+      return [this.base_url, end_point, "?", "client_id=" + this.client_id, "&callback=JSON_CALLBACK"].join('');
+    };
     Instagram.params = function() {
       return {
         params: {
           client_id: this.client_id,
-          callback: this.parseData
+          callback: JSON_CALLBACK
         }
       };
     };
     Instagram.getSingleImage = function(shortcode) {
-      var built_url, end_point;
+      var end_point;
       end_point = "" + this.end_points.shortcode + shortcode;
-      built_url = "" + this.base_url + end_point;
-      $http.jsonp(built_url, this.params).success(function(response) {
+      $http.jsonp(this.buildUrl(end_point)).success(function(response) {
         Instagram.parseData(response);
         return deferred.resolve(Instagram.data);
       }).error(function(err) {
@@ -61,8 +63,23 @@
     };
     return Instagram;
   };
-  Instagram.$inject = ['$http', '$q', 'ClientID', 'InstagramDataParser'];
+  Instagram.$inject = ['$http', '$q', 'InstagramDataParser', 'InstagramClientID'];
   return angular.module('haideeStagram.factories', []).factory('Instagram', Instagram);
+})(angular);
+
+(function(angular) {
+  'use strict';
+  var InstagramClientID;
+  InstagramClientID = function() {
+    this.id = null;
+    this.$get = function() {
+      return this.id;
+    };
+    this.setID = function(id) {
+      return this.id = id;
+    };
+  };
+  return angular.module('haideeStagram.providers', []).provider('InstagramClientID', InstagramClientID);
 })(angular);
 
 (function(angular) {
@@ -87,7 +104,7 @@
 
 (function(angular) {
   'use strict';
-  return angular.module('haideeStagram', ['haideeStagram.factories', 'haideeStagram.services', 'haideeStagram.directives', 'haideeStagram.templates']).value('ClientID', 'REPLACE_WITH_CLIENT_ID');
+  return angular.module('haideeStagram', ['haideeStagram.factories', 'haideeStagram.services', 'haideeStagram.directives', 'haideeStagram.templates', 'haideeStagram.providers']);
 })(angular);
 
 (function(module) {

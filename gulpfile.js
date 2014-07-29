@@ -8,14 +8,15 @@ var gulp      = require('gulp'),
     ngHtml2Js = require("gulp-ng-html2js");
 
 var file_name     = 'hdStagram.js',
-    min_file_name = 'ndStagram.min.js';
+    min_file_name = 'hdStagram.min.js';
 
 var paths = {
   coffee   : './src/coffee/*.coffee',
   js_dest  : './src/js/',
   js       : './src/js/*.js',
   dist     : './dist/',
-  min      : './dist/ngStagram.min.js',
+  demo     : './demo/',
+  min      : './dist/hdStagram.min.js',
   test     : './test/*.spec.js',
   templates: './src/templates/*.html'
 };
@@ -38,13 +39,13 @@ gulp.task('templates', function(){
 gulp.task('concat', function() {
   gulp.src(paths.js)
     .pipe(concat(file_name))
-    .pipe(gulp.dest(paths.dist))
+    .pipe(gulp.dest(paths.dist));
 });
 
 gulp.task('minify', function() {
   gulp.src(paths.js)
     .pipe(concat(min_file_name))
-    .pipe(gulp.dest(paths.dist))
+    .pipe(gulp.dest(paths.dist));
 });
 
 gulp.task('ngMin', function () {
@@ -70,7 +71,12 @@ gulp.task('test', function() {
   });
 });
 
-gulp.task('build', ['concat', 'minify', 'uglify']);
+gulp.task('copy_to_demo', function(){
+  gulp.src('./dist/hdStagram.js')
+    .pipe(gulp.dest(paths.demo));
+});
+
+gulp.task('build', ['concat', 'minify', 'uglify', 'copy_to_demo']);
 
 gulp.task('watch', function(){
   gulp.watch(paths.coffee, ['coffee']);
@@ -78,4 +84,4 @@ gulp.task('watch', function(){
   gulp.watch(paths.js, ['build']);
 });
 
-gulp.task('default', ['coffee', 'build', 'watch']);
+gulp.task('default', ['templates', 'coffee', 'build', 'watch']);

@@ -4,7 +4,7 @@
     'haideeStagram.factories',
     'haideeStagram.services',
     'haideeStagram.directives',
-    'haideeStagram.templates'
+    'haideeStagram.templates',
+    'haideeStagram.providers'
   ]
-  .value('ClientID', 'REPLACE_WITH_CLIENT_ID')
 )(angular)
