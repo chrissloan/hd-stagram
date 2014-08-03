@@ -1,6 +1,6 @@
 {
   "name": "hd-stagram",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "AngularJS module and directives for the Instagram API",
   "main": "gulpfile.js",
   "dependencies": {
