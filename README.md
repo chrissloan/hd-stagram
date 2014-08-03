@@ -45,11 +45,11 @@ In your app, add the directive to the page with appropriate attributes. See opti
 ```
 
 ### Attribute Options
-* `photo-id`: exact shortcode id of image you want to display
-* `tag-name`: a single tag that will bring back recent images tagged with phrase
-* `size`: Ability to set the size of image to be used based on available sizes from Instagram. (Coming soon)
+* `photo-id="SHORTCODE"`: Exact shortcode id of image you want to display. This can be found when visiting the image's url on Instagram site.
+* `tag-name="TAG"`: A single tag that will bring back recent images tagged with phrase
+* `size="thumb|(medium)|large"`: Ability to set the size of image to be used based on available sizes from Instagram. If not included as an attribute, medium size is default.
 
 ## To Do
 * Ability to get images for a given user
 * Create methods for preventing non-attributes
-* Add attribute to set size of image used
+* -Add attribute to set size of image used-
