@@ -12,8 +12,8 @@ var file_name     = 'hdStagram.js',
 
 var paths = {
   coffee   : './src/coffee/*.coffee',
-  js_dest  : './src/js/',
   js       : './src/js/*.js',
+  js_dest  : './src/js/',
   dist     : './dist/',
   demo     : './demo/',
   min      : './dist/hdStagram.min.js',
@@ -22,42 +22,47 @@ var paths = {
 };
 
 gulp.task('coffee', function() {
-  gulp.src(paths.coffee)
+  return gulp.src(paths.coffee)
     .pipe(coffee({bare: true})).on('error', gutil.log)
     .pipe(gulp.dest(paths.js_dest))
 });
 
-gulp.task('templates', function(){
-  gulp.src(paths.templates)
-    .pipe(ngHtml2Js({
-        moduleName: "haideeStagram.templates",
-        prefix: "/templates/"
-    }))
-    .pipe(gulp.dest(paths.js_dest));
-});
-
 gulp.task('concat', function() {
-  gulp.src(paths.js)
+  return gulp.src(paths.js)
     .pipe(concat(file_name))
     .pipe(gulp.dest(paths.dist));
 });
 
 gulp.task('minify', function() {
-  gulp.src(paths.js)
+  return gulp.src(paths.js)
     .pipe(concat(min_file_name))
     .pipe(gulp.dest(paths.dist));
 });
 
 gulp.task('ngMin', function () {
-  gulp.src(paths.min)
+  return gulp.src(paths.min)
     .pipe(ngmin())
     .pipe(gulp.dest(paths.dist));
 });
 
 gulp.task('uglify', function() {
-  gulp.src(paths.min)
+  return gulp.src(paths.min)
     .pipe(uglify())
     .pipe(gulp.dest(paths.dist));
+});
+
+gulp.task('copy_to_demo', function(){
+ return gulp.src('./dist/hdStagram.js')
+    .pipe(gulp.dest(paths.demo));
+});
+
+gulp.task('templates', function(){
+  return gulp.src(paths.templates)
+    .pipe(ngHtml2Js({
+        moduleName: "haideeStagram.templates",
+        prefix: "/templates/"
+    }))
+    .pipe(gulp.dest(paths.js_dest));
 });
 
 gulp.task('test', function() {
@@ -69,11 +74,6 @@ gulp.task('test', function() {
   .on('error', function(err) {
     throw err;
   });
-});
-
-gulp.task('copy_to_demo', function(){
-  gulp.src('./dist/hdStagram.js')
-    .pipe(gulp.dest(paths.demo));
 });
 
 gulp.task('build', ['concat', 'minify', 'uglify', 'copy_to_demo']);
