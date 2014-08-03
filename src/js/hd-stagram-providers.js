@@ -2,7 +2,7 @@
   'use strict';
   var InstagramClientID;
   InstagramClientID = function() {
-    this.id = null;
+    this.id = "FAKECLIENTID";
     this.$get = function() {
       return this.id;
     };

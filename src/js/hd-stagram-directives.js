@@ -1,24 +1,44 @@
 (function(angular) {
   'use strict';
   var hdStagram;
-  hdStagram = function($templateCache, Instagram) {
+  hdStagram = function($templateCache, $compile, Instagram) {
+    var compile_template;
+    compile_template = function(template, scope) {
+      return $compile($templateCache.get("/templates/" + template + ".html"))(scope);
+    };
     return {
       restrict: 'EA',
-      template: $templateCache.get('/templates/single_image.html'),
+      scope: true,
       controller: [
         '$scope', function($scope) {
-          return $scope.getImage = function(id) {
-            return Instagram.getSingleImage(id).then(function(response) {
-              return $scope.image = response;
+          return $scope.fetch = function(params) {
+            return Instagram.fetch(params).then(function(response) {
+              return $scope.instagram = response;
             });
           };
         }
       ],
       link: function(scope, element, attrs) {
-        return scope.getImage(attrs.photoId);
+        var params;
+        if (attrs.photoId) {
+          params = {
+            template: compile_template('single_image', scope),
+            term: attrs.photoId,
+            type: 'shortcode'
+          };
+        }
+        if (attrs.tagName) {
+          params = {
+            template: compile_template('tagged_images', scope),
+            term: attrs.tagName,
+            type: 'tag'
+          };
+        }
+        element.append(params.template);
+        return scope.fetch(params);
       }
     };
   };
-  hdStagram.$inject = ['$templateCache', 'Instagram'];
+  hdStagram.$inject = ['$templateCache', '$compile', 'Instagram'];
   return angular.module('haideeStagram.directives', []).directive('hdStagram', hdStagram);
 })(angular);

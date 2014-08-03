@@ -2,7 +2,7 @@
   'use strict'
 
   InstagramClientID = () ->
-    this.id = null
+    this.id = "FAKECLIENTID"
 
     this.$get = () ->
       this.id

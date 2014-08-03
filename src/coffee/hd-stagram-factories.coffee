@@ -2,17 +2,24 @@
   'use strict'
 
   Instagram = ($http, $q, InstagramDataParser, InstagramClientID) ->
-    deferred = $q.defer()
     Instagram = {}
 
     Instagram.data       = {}
     Instagram.base_url   = "https://api.instagram.com/v1"
     Instagram.client_id  = InstagramClientID
     Instagram.end_points =
-      shortcode: '/media/shortcode/'
+      media: '/media/'
+      shortcode: (shortcode) ->
+        "/media/shortcode/#{shortcode}"
+      tag: (tag) ->
+        "/tags/#{tag}/media/recent"
 
-    Instagram.parseData = (response) ->
-      Instagram.data = InstagramDataParser.singleImage(response)
+    Instagram.parseData = (response, params) ->
+      Instagram.data = switch params.type
+        when 'shortcode'
+          InstagramDataParser.singleImage(response)
+        when 'tag'
+          InstagramDataParser.multipleImages(response)
 
     Instagram.buildUrl = (end_point) ->
       [
@@ -23,15 +30,12 @@
         "&callback=JSON_CALLBACK"
       ].join('')
 
-    Instagram.params = () ->
-      params:
-        client_id: this.client_id
-        callback:  JSON_CALLBACK
+    Instagram.fetch = (params) ->
+      deferred  = $q.defer()
+      end_point = this.end_points[params.type](params.term)
 
-    Instagram.getSingleImage = (shortcode) ->
-      end_point = "#{this.end_points.shortcode}#{shortcode}"
       $http.jsonp(this.buildUrl(end_point)).success (response) ->
-        Instagram.parseData(response)
+        Instagram.parseData(response, params)
         deferred.resolve(Instagram.data)
       .error (err) ->
         deferred.reject('An error occurred.')

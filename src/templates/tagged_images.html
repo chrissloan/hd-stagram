@@ -1,0 +1,13 @@
+<div>
+  <figure ng-repeat="image in instagram">
+    <a ng-href="{{image.link}}" target='_blank'>
+      <img ng-src="{{image.images.low_resolution.url}}" />
+    </a>
+    <figcaption>
+      {{image.caption.text}}
+      <span>
+        {{image.user.username}}
+      </span>
+    </figcaption>
+  </figure>
+</div>

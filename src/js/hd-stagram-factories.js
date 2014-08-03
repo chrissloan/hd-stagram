@@ -2,34 +2,38 @@
   'use strict';
   var Instagram;
   Instagram = function($http, $q, InstagramDataParser, InstagramClientID) {
-    var deferred;
-    deferred = $q.defer();
     Instagram = {};
     Instagram.data = {};
     Instagram.base_url = "https://api.instagram.com/v1";
     Instagram.client_id = InstagramClientID;
     Instagram.end_points = {
-      shortcode: '/media/shortcode/'
+      media: '/media/',
+      shortcode: function(shortcode) {
+        return "/media/shortcode/" + shortcode;
+      },
+      tag: function(tag) {
+        return "/tags/" + tag + "/media/recent";
+      }
     };
-    Instagram.parseData = function(response) {
-      return Instagram.data = InstagramDataParser.singleImage(response);
+    Instagram.parseData = function(response, params) {
+      return Instagram.data = (function() {
+        switch (params.type) {
+          case 'shortcode':
+            return InstagramDataParser.singleImage(response);
+          case 'tag':
+            return InstagramDataParser.multipleImages(response);
+        }
+      })();
     };
     Instagram.buildUrl = function(end_point) {
       return [this.base_url, end_point, "?", "client_id=" + this.client_id, "&callback=JSON_CALLBACK"].join('');
     };
-    Instagram.params = function() {
-      return {
-        params: {
-          client_id: this.client_id,
-          callback: JSON_CALLBACK
-        }
-      };
-    };
-    Instagram.getSingleImage = function(shortcode) {
-      var end_point;
-      end_point = "" + this.end_points.shortcode + shortcode;
+    Instagram.fetch = function(params) {
+      var deferred, end_point;
+      deferred = $q.defer();
+      end_point = this.end_points[params.type](params.term);
       $http.jsonp(this.buildUrl(end_point)).success(function(response) {
-        Instagram.parseData(response);
+        Instagram.parseData(response, params);
         return deferred.resolve(Instagram.data);
       }).error(function(err) {
         return deferred.reject('An error occurred.');

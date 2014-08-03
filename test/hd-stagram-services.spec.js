@@ -21,6 +21,8 @@ describe('haideeStagram Providers', function(){
     base_url            = Instagram.base_url
     end_points          = Instagram.end_points
     shortcode           = "foobar"
+    client_id           = "?client_id=" + Instagram.client_id
+    callback            = "&callback=JSON_CALLBACK"
   }]));
 
   describe('Service::InstagramDataParser', function(){
@@ -31,6 +33,18 @@ describe('haideeStagram Providers', function(){
     describe('consistency of methods and variables', function(){
       it('are in tact', function(){
         expect(InstagramDataParser.singleImage).not.toBe(undefined);
+      });
+    });
+
+    describe('#multipleImages', function(){
+      beforeEach(function(){
+        spyOn(InstagramDataParser, 'multipleImages').and.callThrough();
+      });
+
+      it('returns the correct data parsed', function(){
+        parsed_data = InstagramDataParser.multipleImages(mocks.doubleImageJSON);
+        expect(InstagramDataParser.multipleImages).toHaveBeenCalled();
+        expect(parsed_data.length).toEqual(2);
       });
     });
 
@@ -61,7 +75,7 @@ describe('haideeStagram Providers', function(){
 
     describe('consistency of methods and variables', function(){
       it('are in tact', function(){
-        expect(Instagram.getSingleImage).not.toBe(undefined);
+        expect(Instagram.fetch).not.toBe(undefined);
         expect(Instagram.client_id).not.toBe(undefined);
         expect(Instagram.base_url).not.toBe(undefined);
         expect(Instagram.data).not.toBe(undefined);
@@ -69,9 +83,14 @@ describe('haideeStagram Providers', function(){
       });
 
       it('will return back json data', function(){
-        built_url = base_url + end_points.shortcode + shortcode
+        built_url = base_url + end_points.shortcode(shortcode) + client_id + callback;
         http.expectJSONP(built_url).respond(200, mocks.singleImageJSON)
-        Instagram.getSingleImage(shortcode)
+        params = {
+          template: 'boo',
+          term: shortcode,
+          type: 'shortcode'
+        };
+        Instagram.fetch(params)
         http.flush()
         expect(Instagram.data).toEqual(mocks.singleImageJSON);
       });

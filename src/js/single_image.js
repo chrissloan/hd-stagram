@@ -7,8 +7,15 @@ try {
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/templates/single_image.html',
     '<figure>\n' +
-    '  <img ng-src="{{image.data.images.low_resolution.url}}" />\n' +
-    '  <figcaption>{{image.data.caption.text}}</figcaption>\n' +
+    '  <a ng-href="{{instagram.data.link}}" target=\'_blank\'>\n' +
+    '    <img ng-src="{{instagram.data.images.low_resolution.url}}" />\n' +
+    '  </a>\n' +
+    '  <figcaption>\n' +
+    '    {{instagram.data.caption.text}}\n' +
+    '    <span>\n' +
+    '      {{instagram.data.user.username}}\n' +
+    '    </span>\n' +
+    '  </figcaption>\n' +
     '</figure>\n' +
     '');
 }]);

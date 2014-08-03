@@ -1,4 +1,11 @@
 <figure>
-  <img ng-src="{{image.data.images.low_resolution.url}}" />
-  <figcaption>{{image.data.caption.text}}</figcaption>
+  <a ng-href="{{instagram.data.link}}" target='_blank'>
+    <img ng-src="{{instagram.data.images.low_resolution.url}}" />
+  </a>
+  <figcaption>
+    {{instagram.data.caption.text}}
+    <span>
+      {{instagram.data.user.username}}
+    </span>
+  </figcaption>
 </figure>

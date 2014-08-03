@@ -1,20 +1,37 @@
 ((angular)->
   'use strict'
 
-  hdStagram = ($templateCache, Instagram) ->
+  hdStagram = ($templateCache, $compile, Instagram) ->
+
+    compile_template = (template, scope) ->
+      $compile($templateCache.get("/templates/#{template}.html"))(scope)
+
     return {
       restrict: 'EA'
-      template: $templateCache.get('/templates/single_image.html')
+      scope: true
       controller: ['$scope', ($scope) ->
-        $scope.getImage = (id) ->
-          Instagram.getSingleImage(id).then (response) ->
-            $scope.image = response
+        $scope.fetch = (params) ->
+          Instagram.fetch(params).then (response) ->
+            $scope.instagram = response
       ]
       link: (scope, element, attrs) ->
-        scope.getImage(attrs.photoId)
+        if attrs.photoId
+          params =
+            template: compile_template('single_image', scope)
+            term: attrs.photoId
+            type: 'shortcode'
+
+        if attrs.tagName
+          params =
+            template: compile_template('tagged_images', scope)
+            term: attrs.tagName
+            type: 'tag'
+
+        element.append(params.template)
+        scope.fetch(params)
     }
 
-  hdStagram.$inject = ['$templateCache', 'Instagram']
+  hdStagram.$inject = ['$templateCache', '$compile', 'Instagram']
 
   angular.module 'haideeStagram.directives', []
   .directive 'hdStagram', hdStagram
