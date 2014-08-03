@@ -51,5 +51,4 @@ In your app, add the directive to the page with appropriate attributes. See opti
 
 ## To Do
 * Ability to get images for a given user
-* Create methods for preventing non-attributes
-* -Add attribute to set size of image used-
+* Create methods for preventing non-attributes passed in that could cause errors
