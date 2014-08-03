@@ -1,7 +1,7 @@
 (function(angular) {
   'use strict';
   var hdStagram;
-  hdStagram = function($templateCache, $compile, Instagram) {
+  hdStagram = function($templateCache, $compile, Instagram, InstagramPhotoSize) {
     var compile_template;
     compile_template = function(template, scope) {
       return $compile($templateCache.get("/templates/" + template + ".html"))(scope);
@@ -20,6 +20,8 @@
       ],
       link: function(scope, element, attrs) {
         var params;
+        InstagramPhotoSize.setSize(attrs.size);
+        params = {};
         if (attrs.photoId) {
           params = {
             template: compile_template('single_image', scope),
@@ -34,11 +36,12 @@
             type: 'tag'
           };
         }
+        params['size'] = InstagramPhotoSize.get();
         element.append(params.template);
         return scope.fetch(params);
       }
     };
   };
-  hdStagram.$inject = ['$templateCache', '$compile', 'Instagram'];
+  hdStagram.$inject = ['$templateCache', '$compile', 'Instagram', 'InstagramPhotoSize'];
   return angular.module('haideeStagram.directives', []).directive('hdStagram', hdStagram);
 })(angular);

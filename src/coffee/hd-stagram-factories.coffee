@@ -15,11 +15,12 @@
         "/tags/#{tag}/media/recent"
 
     Instagram.parseData = (response, params) ->
+      size = params.size
       Instagram.data = switch params.type
         when 'shortcode'
-          InstagramDataParser.singleImage(response)
+          InstagramDataParser.singleImage(response, size)
         when 'tag'
-          InstagramDataParser.multipleImages(response)
+          InstagramDataParser.multipleImages(response, size)
 
     Instagram.buildUrl = (end_point) ->
       [
@@ -44,8 +45,30 @@
 
     return Instagram
 
+  InstagramPhotoSize = () ->
+    PhotoSize = {}
+
+    size_options =
+      thumb:  'thumbnail'
+      medium: 'low_resolution'
+      large:  'standard_resolution'
+
+    PhotoSize.size = size_options['medium']
+
+    PhotoSize.get = () ->
+      PhotoSize.size
+
+    PhotoSize.setSize = (size) ->
+      PhotoSize.size = if size
+        size_options[size]
+      else
+        size_options['medium']
+
+    return PhotoSize
+
   Instagram.$inject = ['$http', '$q', 'InstagramDataParser', 'InstagramClientID']
 
   angular.module 'haideeStagram.factories', []
   .factory 'Instagram', Instagram
+  .factory 'InstagramPhotoSize', InstagramPhotoSize
 )(angular)

@@ -2,6 +2,7 @@ var mocks = {};
 
 mocks.singleImageJSON = {
   data: {
+    image_url: "blah.com",
     caption: {
       text: "This is a caption"
     },
@@ -23,6 +24,7 @@ mocks.singleImageJSON = {
 mocks.doubleImageJSON = {
   data: [
     {
+      image_url: "blah.com",
       caption: {
         text: "This is a caption"
       },
@@ -40,6 +42,7 @@ mocks.doubleImageJSON = {
       }
     },
     {
+      image_url: "blah.com",
       caption: {
         text: "This is a caption"
       },

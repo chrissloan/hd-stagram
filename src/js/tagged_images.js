@@ -9,7 +9,7 @@ module.run(['$templateCache', function($templateCache) {
     '<div>\n' +
     '  <figure ng-repeat="image in instagram">\n' +
     '    <a ng-href="{{image.link}}" target=\'_blank\'>\n' +
-    '      <img ng-src="{{image.images.low_resolution.url}}" />\n' +
+    '      <img ng-src="{{image.image_url}}" />\n' +
     '    </a>\n' +
     '    <figcaption>\n' +
     '      {{image.caption.text}}\n' +

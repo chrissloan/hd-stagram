@@ -2,7 +2,8 @@ describe('haideeStagram Providers', function(){
   var Instagram,
       $scope,
       shortcode,
-      http;
+      http,
+      size;
 
   beforeEach(angular.mock.module("haideeStagram"));
 
@@ -16,6 +17,7 @@ describe('haideeStagram Providers', function(){
     http                = $httpBackend;
     Instagram           = $injector.get('Instagram');
     InstagramDataParser = $injector.get('InstagramDataParser');
+    InstagramPhotoSize  = $injector.get('InstagramPhotoSize');
 
     Instagram.client_id = 'fake_client_id'
     base_url            = Instagram.base_url
@@ -23,6 +25,7 @@ describe('haideeStagram Providers', function(){
     shortcode           = "foobar"
     client_id           = "?client_id=" + Instagram.client_id
     callback            = "&callback=JSON_CALLBACK"
+    size                = 'low_resolution'
   }]));
 
   describe('Service::InstagramDataParser', function(){
@@ -33,6 +36,7 @@ describe('haideeStagram Providers', function(){
     describe('consistency of methods and variables', function(){
       it('are in tact', function(){
         expect(InstagramDataParser.singleImage).not.toBe(undefined);
+        expect(InstagramDataParser.multipleImages).not.toBe(undefined);
       });
     });
 
@@ -42,7 +46,7 @@ describe('haideeStagram Providers', function(){
       });
 
       it('returns the correct data parsed', function(){
-        parsed_data = InstagramDataParser.multipleImages(mocks.doubleImageJSON);
+        parsed_data = InstagramDataParser.multipleImages(mocks.doubleImageJSON, size);
         expect(InstagramDataParser.multipleImages).toHaveBeenCalled();
         expect(parsed_data.length).toEqual(2);
       });
@@ -54,14 +58,14 @@ describe('haideeStagram Providers', function(){
       });
 
       it('reutrns the consistency of the data methods', function(){
-        parsed_data = InstagramDataParser.singleImage(mocks.singleImageJSON);
+        parsed_data = InstagramDataParser.singleImage(mocks.singleImageJSON, size);
         expect(parsed_data.data.caption).not.toBe(null)
         expect(parsed_data.data.user).not.toBe(null)
         expect(parsed_data.data.images).not.toBe(null)
       });
 
       it('returns the correct data parsed', function(){
-        parsed_data = InstagramDataParser.singleImage(mocks.singleImageJSON);
+        parsed_data = InstagramDataParser.singleImage(mocks.singleImageJSON, size);
         expect(InstagramDataParser.singleImage).toHaveBeenCalled();
         expect(parsed_data).toEqual(mocks.singleImageJSON);
       });
@@ -88,7 +92,8 @@ describe('haideeStagram Providers', function(){
         params = {
           template: 'boo',
           term: shortcode,
-          type: 'shortcode'
+          type: 'shortcode',
+          size: 'low_resolution'
         };
         Instagram.fetch(params)
         http.flush()

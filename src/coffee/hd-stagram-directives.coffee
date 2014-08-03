@@ -1,7 +1,7 @@
 ((angular)->
   'use strict'
 
-  hdStagram = ($templateCache, $compile, Instagram) ->
+  hdStagram = ($templateCache, $compile, Instagram, InstagramPhotoSize) ->
 
     compile_template = (template, scope) ->
       $compile($templateCache.get("/templates/#{template}.html"))(scope)
@@ -15,6 +15,9 @@
             $scope.instagram = response
       ]
       link: (scope, element, attrs) ->
+        InstagramPhotoSize.setSize(attrs.size)
+        params = {}
+
         if attrs.photoId
           params =
             template: compile_template('single_image', scope)
@@ -27,11 +30,12 @@
             term: attrs.tagName
             type: 'tag'
 
+        params['size'] = InstagramPhotoSize.get()
         element.append(params.template)
         scope.fetch(params)
     }
 
-  hdStagram.$inject = ['$templateCache', '$compile', 'Instagram']
+  hdStagram.$inject = ['$templateCache', '$compile', 'Instagram', 'InstagramPhotoSize']
 
   angular.module 'haideeStagram.directives', []
   .directive 'hdStagram', hdStagram

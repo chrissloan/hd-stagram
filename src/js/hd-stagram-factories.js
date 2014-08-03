@@ -1,6 +1,6 @@
 (function(angular) {
   'use strict';
-  var Instagram;
+  var Instagram, InstagramPhotoSize;
   Instagram = function($http, $q, InstagramDataParser, InstagramClientID) {
     Instagram = {};
     Instagram.data = {};
@@ -16,12 +16,14 @@
       }
     };
     Instagram.parseData = function(response, params) {
+      var size;
+      size = params.size;
       return Instagram.data = (function() {
         switch (params.type) {
           case 'shortcode':
-            return InstagramDataParser.singleImage(response);
+            return InstagramDataParser.singleImage(response, size);
           case 'tag':
-            return InstagramDataParser.multipleImages(response);
+            return InstagramDataParser.multipleImages(response, size);
         }
       })();
     };
@@ -42,6 +44,23 @@
     };
     return Instagram;
   };
+  InstagramPhotoSize = function() {
+    var PhotoSize, size_options;
+    PhotoSize = {};
+    size_options = {
+      thumb: 'thumbnail',
+      medium: 'low_resolution',
+      large: 'standard_resolution'
+    };
+    PhotoSize.size = size_options['medium'];
+    PhotoSize.get = function() {
+      return PhotoSize.size;
+    };
+    PhotoSize.setSize = function(size) {
+      return PhotoSize.size = size ? size_options[size] : size_options['medium'];
+    };
+    return PhotoSize;
+  };
   Instagram.$inject = ['$http', '$q', 'InstagramDataParser', 'InstagramClientID'];
-  return angular.module('haideeStagram.factories', []).factory('Instagram', Instagram);
+  return angular.module('haideeStagram.factories', []).factory('Instagram', Instagram).factory('InstagramPhotoSize', InstagramPhotoSize);
 })(angular);

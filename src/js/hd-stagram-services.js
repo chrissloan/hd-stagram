@@ -3,13 +3,14 @@
   var InstagramDataParser;
   InstagramDataParser = function() {
     InstagramDataParser = {};
-    InstagramDataParser.multipleImages = function(response_data) {
+    InstagramDataParser.multipleImages = function(response_data, size) {
       var d, data, obj, _i, _len, _ref;
       data = [];
       _ref = response_data.data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         d = _ref[_i];
         obj = {};
+        obj.image_url = d.images[size].url;
         obj.caption = d.caption;
         obj.user = d.user;
         obj.images = d.images;
@@ -18,9 +19,10 @@
       }
       return data;
     };
-    InstagramDataParser.singleImage = function(response_data) {
+    InstagramDataParser.singleImage = function(response_data, size) {
       var data;
       data = {};
+      data.image_url = response_data.data.images[size].url;
       data.caption = response_data.data.caption;
       data.user = response_data.data.user;
       data.images = response_data.data.images;

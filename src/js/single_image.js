@@ -8,7 +8,7 @@ module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/templates/single_image.html',
     '<figure>\n' +
     '  <a ng-href="{{instagram.data.link}}" target=\'_blank\'>\n' +
-    '    <img ng-src="{{instagram.data.images.low_resolution.url}}" />\n' +
+    '    <img ng-src="{{instagram.data.image_url}}" />\n' +
     '  </a>\n' +
     '  <figcaption>\n' +
     '    {{instagram.data.caption.text}}\n' +
