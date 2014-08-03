@@ -1,12 +1,12 @@
 {
   "name": "Haidee::ng-stagram",
-  "version": "0.0.0",
-  "homepage": "https://github.com/chrissloan/ng-stagram",
+  "version": "0.0.1",
+  "homepage": "https://github.com/chrissloan/hd-stagram",
   "authors": [
     "Chris Sloan <chris@chrissloan.info>"
   ],
-  "description": "AngularJS service and directives for the Instagram API",
-  "main": "src/ngStagram.js",
+  "description": "AngularJS module and directives for the Instagram API",
+  "main": "src/hdStagram.js",
   "keywords": [
     "angular",
     "instagram",

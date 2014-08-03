@@ -1,7 +1,7 @@
 {
-  "name": "ng-stagram",
-  "version": "0.0.0",
-  "description": "Stuff here",
+  "name": "hd-stagram",
+  "version": "0.0.1",
+  "description": "AngularJS module and directives for the Instagram API",
   "main": "gulpfile.js",
   "dependencies": {
     "gulp": "~3.8.6",
@@ -25,11 +25,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/chrissloan/ng-stagram.git"
+    "url": "git://github.com/chrissloan/hd-stagram.git"
   },
   "author": "Chris Sloan chris@chrissloan.info",
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/chrissloan/ng-stagram/issues"
+    "url": "https://github.com/chrissloan/hd-stagram/issues"
   }
 }

@@ -33,7 +33,7 @@ Using the config block in Angular, add your client ID that you received from the
 ```
 <script>
   angular.module('myApp', ['someModule','haideeStagram']).config(["InstagramClientIDProvider", function(InstagramClientIDProvider){
-    InstagramClientIDProvider.setID('d49be601e4574f6c969978ddb9b696e6');
+    InstagramClientIDProvider.setID('YOUR CLIENT ID');
   }]);
 </script>
 ```
