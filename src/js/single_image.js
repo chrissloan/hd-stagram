@@ -14,7 +14,7 @@ module.run(['$templateCache', function($templateCache) {
     '    {{instagram.data.caption.text}}\n' +
     '    <span>\n' +
     '      <a ng-href="http://instagram.com/{{instagram.data.user.username}}" target="_blank" rel=\'instagram-user\'>\n' +
-    '        {{instagram.data.user.username}}>\n' +
+    '        {{instagram.data.user.username}}\n' +
     '      </a>\n' +
     '    </span>\n' +
     '  </figcaption>\n' +
