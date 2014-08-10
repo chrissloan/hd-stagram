@@ -9,6 +9,7 @@
     return {
       restrict: 'EA',
       scope: true,
+      replace: true,
       controller: [
         '$scope', function($scope) {
           return $scope.fetch = function(params) {
@@ -37,6 +38,9 @@
           };
         }
         params['size'] = InstagramPhotoSize.get();
+        if (attrs.link) {
+          params['link'] = attrs.link;
+        }
         element.append(params.template);
         return scope.fetch(params);
       }
@@ -69,9 +73,9 @@
       return Instagram.data = (function() {
         switch (params.type) {
           case 'shortcode':
-            return InstagramDataParser.singleImage(response, size);
+            return InstagramDataParser.singleImage(response, params);
           case 'tag':
-            return InstagramDataParser.multipleImages(response, size);
+            return InstagramDataParser.multipleImages(response, params);
         }
       })();
     };
@@ -133,30 +137,30 @@
   var InstagramDataParser;
   InstagramDataParser = function() {
     InstagramDataParser = {};
-    InstagramDataParser.multipleImages = function(response_data, size) {
+    InstagramDataParser.multipleImages = function(response_data, params) {
       var d, data, obj, _i, _len, _ref;
       data = [];
       _ref = response_data.data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         d = _ref[_i];
         obj = {};
-        obj.image_url = d.images[size].url;
+        obj.image_url = d.images[params.size].url;
         obj.caption = d.caption;
         obj.user = d.user;
         obj.images = d.images;
-        obj.link = d.link;
+        obj.link = params.link ? params.link : d.link;
         data.push(obj);
       }
       return data;
     };
-    InstagramDataParser.singleImage = function(response_data, size) {
+    InstagramDataParser.singleImage = function(response_data, params) {
       var data;
       data = {};
-      data.image_url = response_data.data.images[size].url;
+      data.image_url = response_data.data.images[params.size].url;
       data.caption = response_data.data.caption;
       data.user = response_data.data.user;
       data.images = response_data.data.images;
-      data.link = response_data.data.link;
+      data.link = params.link ? params.link : response_data.data.link;
       return {
         data: data
       };
@@ -180,13 +184,15 @@ try {
 module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/templates/single_image.html',
     '<figure>\n' +
-    '  <a ng-href="{{instagram.data.link}}" target=\'_blank\'>\n' +
+    '  <a ng-href="{{instagram.data.link}}" rel=\'instagram-image\'>\n' +
     '    <img ng-src="{{instagram.data.image_url}}" />\n' +
     '  </a>\n' +
     '  <figcaption>\n' +
     '    {{instagram.data.caption.text}}\n' +
     '    <span>\n' +
-    '      {{instagram.data.user.username}}\n' +
+    '      <a ng-href="http://instagram.com/{{instagram.data.user.username}}" target="_blank" rel=\'instagram-user\'>\n' +
+    '        {{instagram.data.user.username}}>\n' +
+    '      </a>\n' +
     '    </span>\n' +
     '  </figcaption>\n' +
     '</figure>\n' +
@@ -204,13 +210,15 @@ module.run(['$templateCache', function($templateCache) {
   $templateCache.put('/templates/tagged_images.html',
     '<div>\n' +
     '  <figure ng-repeat="image in instagram">\n' +
-    '    <a ng-href="{{image.link}}" target=\'_blank\'>\n' +
+    '    <a ng-href="{{image.link}}" rel=\'instagram-image\'>\n' +
     '      <img ng-src="{{image.image_url}}" />\n' +
     '    </a>\n' +
     '    <figcaption>\n' +
     '      {{image.caption.text}}\n' +
     '      <span>\n' +
-    '        {{image.user.username}}\n' +
+    '        <a ng-href="http://instagram.com/{{instagram.data.user.username}}" target="_blank" rel=\'instagram-user\'>\n' +
+    '          {{image.user.username}}\n' +
+    '        </a>\n' +
     '      </span>\n' +
     '    </figcaption>\n' +
     '  </figure>\n' +

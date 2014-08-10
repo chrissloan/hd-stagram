@@ -9,6 +9,7 @@
     return {
       restrict: 'EA'
       scope: true
+      replace: true
       controller: ['$scope', ($scope) ->
         $scope.fetch = (params) ->
           Instagram.fetch(params).then (response) ->
@@ -31,6 +32,7 @@
             type: 'tag'
 
         params['size'] = InstagramPhotoSize.get()
+        params['link'] = attrs.link if attrs.link
         element.append(params.template)
         scope.fetch(params)
     }

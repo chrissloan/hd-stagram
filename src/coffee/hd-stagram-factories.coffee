@@ -18,9 +18,9 @@
       size = params.size
       Instagram.data = switch params.type
         when 'shortcode'
-          InstagramDataParser.singleImage(response, size)
+          InstagramDataParser.singleImage(response, params)
         when 'tag'
-          InstagramDataParser.multipleImages(response, size)
+          InstagramDataParser.multipleImages(response, params)
 
     Instagram.buildUrl = (end_point) ->
       [

@@ -65,6 +65,23 @@ describe('haideeStagram Directives', function(){
     });
   });
 
+  describe('overriding the link attribute', function(){
+    beforeEach(function(){
+      element   = angular.element(fixtures.singleImageOverride)
+      compile(element)($scope);
+      built_url = base_url + end_points.shortcode(term) + client_id + callback;
+      http.expectJSONP(built_url).respond(200, mocks.singleImageJSON)
+      $scope.$digest();
+      http.flush()
+    });
+
+    it('should override the image link on the main image', function(){
+      anchor = element.find('a')
+      expect(anchor.attr('href')).toEqual('foo.com')
+    });
+
+  });
+
   describe('a list of images based on a tag', function(){
     beforeEach(function(){
       element   = angular.element(fixtures.taggedImages)
@@ -83,9 +100,10 @@ describe('haideeStagram Directives', function(){
     });
 
     it('should include the correct image url', function(){
-      anchors = element.find('a');
-      expect(anchors.length).toBe(2)
+      anchors = element.find("a");
+      expect(anchors.length).toBe(4)
       expect(anchors[0].attributes.href.value).toEqual(mocks.doubleImageJSON.data[0].link)
+      expect(anchors[1].attributes.href.value).toEqual("http://instagram.com/")
     });
   });
 });

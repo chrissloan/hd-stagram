@@ -3,7 +3,7 @@ describe('haideeStagram Providers', function(){
       $scope,
       shortcode,
       http,
-      size;
+      params;
 
   beforeEach(angular.mock.module("haideeStagram"));
 
@@ -25,7 +25,12 @@ describe('haideeStagram Providers', function(){
     shortcode           = "foobar"
     client_id           = "?client_id=" + Instagram.client_id
     callback            = "&callback=JSON_CALLBACK"
-    size                = 'low_resolution'
+    params = {
+      template: 'boo',
+      term: shortcode,
+      type: 'shortcode',
+      size: 'low_resolution'
+    };
   }]));
 
   describe('Service::InstagramDataParser', function(){
@@ -46,7 +51,7 @@ describe('haideeStagram Providers', function(){
       });
 
       it('returns the correct data parsed', function(){
-        parsed_data = InstagramDataParser.multipleImages(mocks.doubleImageJSON, size);
+        parsed_data = InstagramDataParser.multipleImages(mocks.doubleImageJSON, params);
         expect(InstagramDataParser.multipleImages).toHaveBeenCalled();
         expect(parsed_data.length).toEqual(2);
       });
@@ -58,14 +63,14 @@ describe('haideeStagram Providers', function(){
       });
 
       it('reutrns the consistency of the data methods', function(){
-        parsed_data = InstagramDataParser.singleImage(mocks.singleImageJSON, size);
+        parsed_data = InstagramDataParser.singleImage(mocks.singleImageJSON, params);
         expect(parsed_data.data.caption).not.toBe(null)
         expect(parsed_data.data.user).not.toBe(null)
         expect(parsed_data.data.images).not.toBe(null)
       });
 
       it('returns the correct data parsed', function(){
-        parsed_data = InstagramDataParser.singleImage(mocks.singleImageJSON, size);
+        parsed_data = InstagramDataParser.singleImage(mocks.singleImageJSON, params);
         expect(InstagramDataParser.singleImage).toHaveBeenCalled();
         expect(parsed_data).toEqual(mocks.singleImageJSON);
       });
@@ -89,12 +94,6 @@ describe('haideeStagram Providers', function(){
       it('will return back json data', function(){
         built_url = base_url + end_points.shortcode(shortcode) + client_id + callback;
         http.expectJSONP(built_url).respond(200, mocks.singleImageJSON)
-        params = {
-          template: 'boo',
-          term: shortcode,
-          type: 'shortcode',
-          size: 'low_resolution'
-        };
         Instagram.fetch(params)
         http.flush()
         expect(Instagram.data).toEqual(mocks.singleImageJSON);

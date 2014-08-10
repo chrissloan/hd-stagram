@@ -21,9 +21,9 @@
       return Instagram.data = (function() {
         switch (params.type) {
           case 'shortcode':
-            return InstagramDataParser.singleImage(response, size);
+            return InstagramDataParser.singleImage(response, params);
           case 'tag':
-            return InstagramDataParser.multipleImages(response, size);
+            return InstagramDataParser.multipleImages(response, params);
         }
       })();
     };

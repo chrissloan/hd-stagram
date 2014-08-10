@@ -9,6 +9,7 @@
     return {
       restrict: 'EA',
       scope: true,
+      replace: true,
       controller: [
         '$scope', function($scope) {
           return $scope.fetch = function(params) {
@@ -37,6 +38,9 @@
           };
         }
         params['size'] = InstagramPhotoSize.get();
+        if (attrs.link) {
+          params['link'] = attrs.link;
+        }
         element.append(params.template);
         return scope.fetch(params);
       }

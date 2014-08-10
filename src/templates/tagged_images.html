@@ -1,12 +1,14 @@
 <div>
   <figure ng-repeat="image in instagram">
-    <a ng-href="{{image.link}}" target='_blank'>
+    <a ng-href="{{image.link}}" rel='instagram-image'>
       <img ng-src="{{image.image_url}}" />
     </a>
     <figcaption>
       {{image.caption.text}}
       <span>
-        {{image.user.username}}
+        <a ng-href="http://instagram.com/{{instagram.data.user.username}}" target="_blank" rel='instagram-user'>
+          {{image.user.username}}
+        </a>
       </span>
     </figcaption>
   </figure>
