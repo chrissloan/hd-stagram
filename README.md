@@ -48,7 +48,7 @@ In your app, add the directive to the page with appropriate attributes. See opti
 * `photo-id="SHORTCODE"`: Exact shortcode id of image you want to display. This can be found when visiting the image's url on Instagram site.
 * `tag-name="TAG"`: A single tag that will bring back recent images tagged with phrase
 * `size="thumb|(medium)|large"`: Ability to set the size of image to be used based on available sizes from Instagram. If not included as an attribute, medium size is default.
-* `link="something.com": Override the link of the instagram image to something else.
+* `link="something.com"`: Override the link of the instagram image to something else.
 
 ## To Do
 * Ability to get images for a given user
