@@ -66,18 +66,36 @@ describe('haideeStagram Directives', function(){
   });
 
   describe('overriding the link attribute', function(){
-    beforeEach(function(){
-      element   = angular.element(fixtures.singleImageOverride)
-      compile(element)($scope);
-      built_url = base_url + end_points.shortcode(term) + client_id + callback;
-      http.expectJSONP(built_url).respond(200, mocks.singleImageJSON)
-      $scope.$digest();
-      http.flush()
+    describe('with a link to another page', function(){
+      beforeEach(function(){
+        element   = angular.element(fixtures.singleImageOverride)
+        compile(element)($scope);
+        built_url = base_url + end_points.shortcode(term) + client_id + callback;
+        http.expectJSONP(built_url).respond(200, mocks.singleImageJSON)
+        $scope.$digest();
+        http.flush()
+      });
+
+      it('should go to a url', function(){
+        anchor = element.find('a')
+        expect(anchor.attr('href')).toEqual('foo.com')
+      });
     });
 
-    it('should override the image link on the main image', function(){
-      anchor = element.find('a')
-      expect(anchor.attr('href')).toEqual('foo.com')
+    describe('with a link directly to the image file', function(){
+      beforeEach(function(){
+        element   = angular.element(fixtures.singleImageOverrideToImage)
+        compile(element)($scope);
+        built_url = base_url + end_points.shortcode(term) + client_id + callback;
+        http.expectJSONP(built_url).respond(200, mocks.singleImageJSON)
+        $scope.$digest();
+        http.flush()
+      });
+
+      it('should go to the image file', function(){
+        anchor = element.find('a')
+        expect(anchor.attr('href')).toEqual(mocks.singleImageJSON.data.images.standard_resolution.url)
+      });
     });
 
   });

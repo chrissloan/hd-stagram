@@ -136,10 +136,21 @@
   'use strict';
   var InstagramDataParser;
   InstagramDataParser = function() {
+    var parseLinkType;
     InstagramDataParser = {};
+    parseLinkType = function(params, data) {
+      if (params.link === 'image') {
+        return data.images['standard_resolution'].url;
+      } else {
+        return params.link;
+      }
+    };
     InstagramDataParser.multipleImages = function(response_data, params) {
       var d, data, obj, _i, _len, _ref;
       data = [];
+      if (params.link === 'image') {
+        debugger;
+      }
       _ref = response_data.data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         d = _ref[_i];
@@ -148,7 +159,7 @@
         obj.caption = d.caption;
         obj.user = d.user;
         obj.images = d.images;
-        obj.link = params.link ? params.link : d.link;
+        obj.link = params.link ? parseLinkType(params, d) : d.link;
         data.push(obj);
       }
       return data;

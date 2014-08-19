@@ -16,6 +16,11 @@ mocks.singleImageJSON = {
         url: "blah.com",
         width: 100,
         height: 100
+      },
+      standard_resolution: {
+        url: "standard.com",
+        width: 600,
+        height: 600
       }
     }
   }
